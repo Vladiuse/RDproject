@@ -1,0 +1,9 @@
+password: 2030
+
+<form method="post">
+{% csrf_token %}
+<input type="hidden" name="next" value="{{ next }}">
+{% csrf_token %}
+{{ form.as_p }}
+<button type="submit" class="btn btn-primary btn-block">Log in</button>
+</form>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BASE</title>
+</head>
+<body>
+<h1> BASE</h1>
+{% if user.is_authenticated %}
+  <p>Hi {{ user.username }}!</p>
+  <p><a href="{% url 'logout' %}">Log out</a></p>
+<p>Name: {{user.employee.full_name }}</p>
+<p>Position: {{ user.employee.position }}</p>
+<p> Groups: {% for group in user.groups.all %} {{ group.name}}, {% endfor %} </p>
+
+{% else %}
+<p><a href="{% url 'login' %}">Login</a></p>
+{% endif %}
+<a href="{% url 'employees:all' %}">My Tree</a>
+</body>
+</html>
