@@ -2,7 +2,7 @@
 {% block object-tools %}
   <form action="clean/" method="POST">
     {% csrf_token %}
-    <input type="submit" value="Импорт" />
+    <input type="submit" value="Clear total paid" />
   </form>
     {{ block.super }}
 {% endblock %}
