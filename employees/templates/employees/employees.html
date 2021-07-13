@@ -10,7 +10,7 @@
 <ul>
     {% recursetree genres %}
         <li>
-            {{ node.more_info }} - {{ node.user }}
+            {{ node }} - {{ node.user }}
             {% if not node.is_leaf_node %}
                 <ul class="children">
                     {{ children }}
