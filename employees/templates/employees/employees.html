@@ -8,7 +8,7 @@
 
 {% load mptt_tags %}
 <ul>
-    {% recursetree genres %}
+    {% recursetree employee %}
         <li>
             {{ node }} - {{ node.user }}
             {% if not node.is_leaf_node %}

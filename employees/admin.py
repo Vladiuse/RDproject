@@ -1,13 +1,13 @@
 from django.conf.urls import url
 from django.contrib import admin
+from django.db.models import F
 from django.http import HttpResponseRedirect
 from django.utils.translation import gettext_lazy as _
-from django.db.models import F
-from .models import Employee, Some
+
+from .models import Employee
 
 
 class EmployeeLevelFilter(admin.SimpleListFilter):
-    # employee
     title = _('Level in company')
     parameter_name = 'Level'
 
@@ -26,7 +26,6 @@ class EmployeeLevelFilter(admin.SimpleListFilter):
 
 
 class EmployeeAdmin(admin.ModelAdmin):
-    title_name = 'Position'
     list_display_links = ('parent', 'full_name')
     list_display = ('full_name', 'position', 'parent', 'salary', 'total_paid', 'user')
     change_list_template = "admin/clean_data.html"
@@ -35,16 +34,16 @@ class EmployeeAdmin(admin.ModelAdmin):
     def get_urls(self):
         urls = super(EmployeeAdmin, self).get_urls()
         custom_urls = [url('^clean/$', self.clean_data, name='clean_data'), ]
-
         return custom_urls + urls
 
     def clean_data(self, request):
-        Employee.objects.update(total_paid=F('total_paid')+10)  # TODO fix
+        Employee.objects.update(total_paid=F('total_paid') + 10)  # TODO fix
         self.message_user(request, 'Данные о зп отчищены')
         return HttpResponseRedirect('../')
+
 
 class SomeAdmin(admin.ModelAdmin):
     list_display = ['id', 'name', 'some']
 
+
 admin.site.register(Employee, EmployeeAdmin)
-admin.site.register(Some, SomeAdmin)
