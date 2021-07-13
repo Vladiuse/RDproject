@@ -1,6 +1,7 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AbstractUser
 from django.db import models
 from mptt.models import TreeForeignKey, MPTTModel
+
 
 
 class Employee(MPTTModel):
@@ -10,7 +11,8 @@ class Employee(MPTTModel):
     employment_date = models.DateField(blank=True)
     salary = models.IntegerField()
     total_paid = models.IntegerField()
-    parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
+    parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True,
+                            related_name='children', verbose_name='Начальник')
 
     class MPTTMeta:
         order_insertion_by = ['full_name']
@@ -57,12 +59,27 @@ class Employee(MPTTModel):
         return s
 
     def delete_all(self):
-        for i in Employee.objects.all():
-            user = i.user
+        for employee in Employee.objects.all():
+            user = employee.user
             user.delete()
-            i.delete()
+            employee.delete()
         return 'DELETE ALL'
 
+
+
+class Some(MPTTModel):
+    name = models.CharField(max_length=99)
+    count = models.IntegerField()
+    some = models.OneToOneField(User, on_delete=models.CASCADE)
+    parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True,
+                            related_name='children')
+
+
+    def more_info(self):
+        return f'some: {self.name}-{self.parent}'
+
+    def __str__(self):
+        return f'TestSeed: {self.name}-{self.count}'
 
 
 
